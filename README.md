@@ -9,3 +9,4 @@ Natural Language SQL Project for Database Modeling Concepts
 - make fake data -- 3 mueseums, 10 visitors, 9 exhibits, 
 each exhibit has 5 pieces
 
+https://replit.com/@math919191/ArtMuseums#main.sql
