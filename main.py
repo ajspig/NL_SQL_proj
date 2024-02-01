@@ -1,11 +1,11 @@
 from openai import OpenAI
 import os
-from dotenv import load_dotenv
+# from dotenv import load_dotenv
 import sqlite3
 
-from schema import get_schema
+from sql_schema import get_schema
 
-load_dotenv("./.env")
+# load_dotenv("./.env")
 
 client = OpenAI(api_key=os.environ.get("OPENAI_API_KEY"))
 # ***model**** (aka not important) for getting the schema for the prompt:
@@ -14,9 +14,8 @@ client = OpenAI(api_key=os.environ.get("OPENAI_API_KEY"))
 sqlOnlyRequest = "Give me a sqlite select statement that answers the quesiton. Only respond with sqlite syntax. If there's an error, don't explain it."
 #test select statement before moving on
 questionStrategies = {
-    "zero_shot": {get_schema()} + sqlOnlyRequest,
-    "single_domain_double_shot": ({get_schema()} + 
-                                  "What kind of art is displayed in the Spanish Art Through the Ages exhibit? " +
+    "zero_shot": get_schema() + sqlOnlyRequest,
+    "single_domain_double_shot": (get_schema() + 
                                   "SELECT DISTINCT a.artist, a.art_name, a.country\nFROM exhibit e\nJOIN art_and_exhibit ae ON e.exhibit_id = ae.exhibit_id\nJOIN art a ON ae.art_id = a.art_id\nWHERE e.exhibit_name = 'Spanish Art Through the Ages';\n " +
                                   sqlOnlyRequest)
 }
@@ -50,8 +49,8 @@ print(completion.choices[0].message)
 
 
 #Connect to database
-con = sqlite3.connect("art_museum.db")
-cur = con.cursor()
+# con = sqlite3.connect("art_museum.db")
+# cur = con.cursor()
 
 sql_query = """
             SELECT name, location, MAX(size) FROM museum;
@@ -63,5 +62,3 @@ print(res.fetchall())
 
 cur.close()
 con.close()
-
-
