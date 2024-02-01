@@ -53,3 +53,30 @@ completion = client.chat.completions.create(
 )
 
 print(completion.choices[0].message)
+
+#once db connection is established, put read info into var below
+setupSqlScript = {}
+#set up sqlitecursor. Then run this to set up table and keys sqliteCursor.executescript(setupSqlScript)
+
+#questionStrategies
+sqlOnlyRequest = "Give me a sqlite select statement that answers the quesiton. Only respond with sqlite syntax. If there's an error, don't explain it."
+#test select statement before moving on
+questionStrategies = {
+    "zero_shot": setupSqlScript + sqlOnlyRequest,
+    "single_domain_double_shot": (setupSqlScript + 
+                                  "What kind of art is displayed in the Spanish Art Through the Ages exhibit? " +
+                                  "SELECT DISTINCT a.artist, a.art_name, a.country\nFROM exhibit e\nJOIN art_and_exhibit ae ON e.exhibit_id = ae.exhibit_id\nJOIN art a ON ae.art_id = a.art_id\nWHERE e.exhibit_name = 'Spanish Art Through the Ages';\n " +
+                                  sqlOnlyRequest)
+}
+
+questions = [
+    "What kind of art is displayed in the Spanish Art Through the Ages exhibit?",
+    "What museum attracts the most 35 year old women?",
+    "Which museum has the most art from France?",
+    "Where is the largest museum located?",
+    "Which museum has the longest running exhibit?",
+    "List what art is in Rodin: Sculpting the Human Form.",
+    "Which museum has the most male visitors under 40?",
+    "Which museum has the oldest artwork?"
+    "Are there any art pieces not currently in any exhibits?"
+]

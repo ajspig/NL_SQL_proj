@@ -62,25 +62,24 @@ CREATE TABLE art_and_exhibit (
 );
 
 
--- Inserting 3 museums
 INSERT INTO museum (museum_id, museum_name, location, date_opened, size_of_museum, security_level)
 VALUES 
-(1, 'Museum A', 'Location A', '2022-01-01', 500, 3),
-(2, 'Museum B', 'Location B', '2022-01-01', 600, 4),
-(3, 'Museum C', 'Location C', '2022-01-01', 700, 5);
+(1, 'Metropolitan Museum of Art', 'New York City, USA', '1870-04-13', 250000, 5),
+(2, 'Louvre Museum', 'Paris, France', '1793-08-10', 73000, 5),
+(3, 'British Museum', 'London, UK', '1753-01-15', 92000, 4);
 
--- Inserting 9 exhibits (3 for each museum)
+-- Inserting 9 exhibits (3 for each museum) with varied dates, including earlier years
 INSERT INTO exhibit (exhibit_id, start_date, end_date, exhibit_name, max_num_pieces, size_of_exhibit)
 VALUES 
-(1, '2022-02-01', '2022-03-01', 'Exhibit 1', 5, 100),
-(2, '2022-02-01', '2022-03-01', 'Exhibit 2', 5, 150),
-(3, '2022-02-01', '2022-03-01', 'Exhibit 3', 5, 200),
-(4, '2022-02-01', '2022-03-01', 'Exhibit 1', 5, 120),
-(5, '2022-02-01', '2022-03-01', 'Exhibit 2', 5, 180),
-(6, '2022-02-01', '2022-03-01', 'Exhibit 3', 5, 220),
-(7, '2022-02-01', '2022-03-01', 'Exhibit 1', 5, 130),
-(8, '2022-02-01', '2022-03-01', 'Exhibit 2', 5, 170),
-(9, '2022-02-01', '2022-03-01', 'Exhibit 3', 5, 210);
+(1, '2023-10-15', '2024-01-15', 'Masterpieces of Vincent van Gogh', 7, 1200),
+(2, '2023-11-01', '2024-02-01', 'French Impressionism: Manet to Monet', 10, 1500),
+(3, '2024-01-01', '2024-04-01', 'Italian Renaissance: Caravaggio to Michelangelo', 8, 1800),
+(4, '2024-03-15', '2024-06-15', 'Spanish Art Through the Ages', 6, 1100),
+(5, '2024-04-01', '2024-07-01', 'Dutch Golden Age: Rembrandt and Vermeer', 9, 1400),
+(6, '2024-05-01', '2024-08-01', 'French Modernism: Degas to Matisse', 11, 1600),
+(7, '2024-06-15', '2024-09-15', 'Leonardo da Vinci: Renaissance Innovator', 5, 1300),
+(8, '2024-07-01', '2024-10-01', 'Pablo Picasso: Cubism and Beyond', 7, 1700),
+(9, '2024-08-01', '2024-11-01', 'Rodin: Sculpting the Human Form', 8, 1500);
 
 -- Linking museums and exhibits
 INSERT INTO museum_and_exhibit (museum_id, exhibit_id)
@@ -113,12 +112,12 @@ VALUES
 (19, 'Henri Matisse', 'Woman with a Hat', '1905-01-01', 'France', 'Oil on canvas', 5),
 (20, 'Auguste Rodin', 'The Kiss', '1888-01-01', 'France', 'Marble', 5);
 
--- Inserting art into exhibits
+-- Inserting art into exhibits based on exhibit names (note this means two artworks won't be in exhibits which could be a fun query!)
 INSERT INTO art_and_exhibit (art_id, exhibit_id)
-VALUES
-(1, 1), (2, 1), (3, 1), (4, 1), (5, 1),
-(6, 2), (7, 2), (8, 2), (9, 2), (10, 2),
-(11, 3), (12, 3), (13, 3), (14, 3), (15, 3);
+SELECT a.art_id, e.exhibit_id
+FROM art a
+JOIN exhibit e ON e.exhibit_name LIKE CONCAT('%', a.artist, '%');
+
 
 -- Inserting 10 visits
 INSERT INTO visit (visit_id, time_entry, time_exit, visitor_name, visitor_age, visitor_gender, museum_id)
