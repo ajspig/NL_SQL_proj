@@ -3,7 +3,7 @@ import os
 from dotenv import load_dotenv
 import sqlite3
 
-from schema import get_schema
+from sql_schema import get_schema
 
 load_dotenv("./.env")
 
@@ -47,7 +47,7 @@ completion = client.chat.completions.create(
                 Kyle ";
                 Test Question
                 Question : How many high schoolers are there ?
-                SELECT        
+                SELECT 
     """,
         },
     ],
