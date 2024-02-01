@@ -1,6 +1,7 @@
 from openai import OpenAI
 import os
 from dotenv import load_dotenv
+import sqlite3
 
 from schema import get_schema
 
@@ -80,3 +81,14 @@ questions = [
     "Which museum has the oldest artwork?"
     "Are there any art pieces not currently in any exhibits?"
 ]
+
+
+#Connect to database
+con = sqlite3.connect("art_museum.db")
+cur = con.cursor()
+
+sql_query = """
+            SELECT name, location, MAX(size) FROM museum;
+            """
+res = cur.execute(sql_query)
+print(res.fetchall())
