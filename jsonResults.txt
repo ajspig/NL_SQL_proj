@@ -1,0 +1,10 @@
+[
+  {
+    "question": "What museum attracts the most 35 year old women?",
+    "sql": "SELECT m.museum_name \nFROM museum m \nJOIN visit v ON m.museum_id = v.museum_id \nWHERE v.visitor_age = '35' AND v.visitor_gender = 'female' \nGROUP BY m.museum_name \nORDER BY COUNT(*) DESC \nLIMIT 1;"
+  },
+  {
+    "question": "Which museum has the most art from France?",
+    "sql": "SELECT DISTINCT m.museum_name FROM museum m JOIN exhibit e ON m.museum_id = e.museum_id JOIN art_and_exhibit ae ON e.exhibit_id = ae.exhibit_id JOIN art a ON ae.art_id = a.art_id WHERE a.country = 'France' ORDER BY COUNT(a.art_id) DESC LIMIT 1;"
+  }
+]
