@@ -8,7 +8,8 @@ CREATE TABLE art (
     year_created DATETIME,
     country VARCHAR(100),
     material VARCHAR(100),
-    min_req_security_level INT
+    min_req_security_level INT,
+    PRIMARY KEY(art_id)
 );
 
 
@@ -18,7 +19,8 @@ CREATE TABLE museum (
     location VARCHAR(100),
     date_opened DATETIME,
     size_of_museum INT,
-    security_level INT
+    security_level INT,
+    PRIMARY KEY(museum_id)
 );
 
 CREATE TABLE visit (
@@ -28,7 +30,8 @@ CREATE TABLE visit (
     visitor_name VARCHAR(100),
     visitor_age VARCHAR(100),
     visitor_gender VARCHAR(100),
-    museum_id INT
+    museum_id INT,
+    PRIMARY KEY(visit_id)
 );
 
 
@@ -38,17 +41,24 @@ CREATE TABLE exhibit (
   end_date DATETIME,
   exhibit_name VARCHAR(100),
   max_num_pieces INT,
-  size_of_exhibit INT   
+  size_of_exhibit INT,
+  PRIMARY KEY(exhibit_id)   
 );
 
 CREATE TABLE museum_and_exhibit (
   museum_id INT,
-  exhibit_id INT
+  exhibit_id INT,
+  PRIMARY KEY(museum_id, exhibit_id),
+	FOREIGN KEY(museum_id) REFERENCES museum(museum_id),
+  FOREIGN KEY(exhibit_id) REFERENCES exhibit(exhibit_id)
 );
 
 CREATE TABLE art_and_exhibit (
   art_id INT,
-  exhibit_id INT
+  exhibit_id INT,
+  PRIMARY KEY(exhibit_id, art_id),
+	FOREIGN KEY(exhibit_id) REFERENCES exhibit(exhibit_id),
+  FOREIGN KEY(art_id) REFERENCES art(art_id)
 );
 
 
