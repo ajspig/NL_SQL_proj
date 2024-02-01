@@ -44,7 +44,7 @@ sql_create_table_exhibit = """
 	exhibit_name VARCHAR(100),
 	max_num_pieces INT,
 	size_of_exhibit INT,
-	PRIMARY KEY(exhibit_id)
+	PRIMARY KEY(exhibit_id)   
 	);
 """
 
@@ -54,8 +54,8 @@ sql_create_table_museum_exhibit = """
 		exhibit_id INT,
 		PRIMARY KEY(museum_id, exhibit_id),
 		FOREIGN KEY(museum_id) REFERENCES museum(museum_id),
-  		FOREIGN KEY(exhibit_id) REFERENCES exhibit(exhibit_id)
-	);
+		FOREIGN KEY(exhibit_id) REFERENCES exhibit(exhibit_id)
+		);
 """
 
 sql_create_table_art_exhibit = """
@@ -65,7 +65,7 @@ sql_create_table_art_exhibit = """
 		PRIMARY KEY(exhibit_id, art_id),
 		FOREIGN KEY(exhibit_id) REFERENCES exhibit(exhibit_id),
 		FOREIGN KEY(art_id) REFERENCES art(art_id)
-	);
+		);
 """
 
 def get_schema():

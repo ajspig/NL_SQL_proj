@@ -10,11 +10,19 @@ from sql_schema import get_schema
 # load_dotenv("./.env")
 
 client = OpenAI(api_key=os.environ.get("OPENAI_API_KEY"))
-# ***model**** (aka not important) for getting the schema for the prompt:
+con = sqlite3.connect("art_museum.db")
+
+def sanitize_sql(sql):
+    gpt_start = "```sql"
+    gpt_end = "```"
+    if gpt_start in sql:
+        sql = sql.split(gpt_start)[1]
+    if gpt_end in sql:
+        sql = sql.split(gpt_end)[0]
+    return sql
 
 #questionStrategies
 sqlOnlyRequest = "Give me a sqlite select statement that answers the quesiton. Only respond with sqlite syntax. If there's an error, don't explain it."
-#test select statement before moving on
 questionStrategies = {
     "zero_shot": get_schema() + sqlOnlyRequest,
     "single_domain_double_shot": (get_schema() + 
@@ -39,7 +47,7 @@ for questionStrategy, query in questionStrategies.items():
     questionResults = []
     for question in questions:
         print(question)
-        # print(question)
+        error =""
         completion = client.chat.completions.create(
             model="gpt-3.5-turbo",
             messages=[
@@ -52,28 +60,28 @@ for questionStrategy, query in questionStrategies.items():
 
         sql_query = completion.choices[0].message.content
         print(sql_query)
-        print()
+        
+        try:
+            cur = con.cursor()
+            res = cur.execute(sanitize_sql(sql_query))
+            result = res.fetchall()
+            print(res.fetchall())
+        except Exception as e:
+            error = str(e)
+            result = ""
+            print(error)
 
         questionResults.append({
             "question": question,
-            "sql": sql_query
+            "sql": sql_query,
+            "db_sql_results": result,
+            "error": error,
         })
+        cur.close()
 
 with open("jsonResults.txt", "w", encoding="utf-8") as f:
     json.dump(questionResults, f, indent=2)
 
 
-#Connect to database
-con = sqlite3.connect("art_museum.db")
-cur = con.cursor()
-
-sql_query = """
-            SELECT name, location, MAX(size) FROM museum;
-            """
-res = cur.execute(sql_query)
-print(res.fetchall())
-
-
-
-cur.close()
+# close database 
 con.close()

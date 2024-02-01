@@ -1,6 +1,5 @@
 -- Used repl and ai to generate data
 -- https://replit.com/@math919191/ArtMuseums#main.sql
-
 CREATE TABLE art (
     art_id INT,
     artist VARCHAR(100),
@@ -45,7 +44,7 @@ CREATE TABLE exhibit (
   PRIMARY KEY(exhibit_id)   
 );
 
-CREATE TABLE museum_and_exhibit (
+CREATE TABLE museum_exhibit (
   museum_id INT,
   exhibit_id INT,
   PRIMARY KEY(museum_id, exhibit_id),
@@ -53,7 +52,7 @@ CREATE TABLE museum_and_exhibit (
   FOREIGN KEY(exhibit_id) REFERENCES exhibit(exhibit_id)
 );
 
-CREATE TABLE art_and_exhibit (
+CREATE TABLE art_exhibit (
   art_id INT,
   exhibit_id INT,
   PRIMARY KEY(exhibit_id, art_id),
@@ -82,7 +81,7 @@ VALUES
 (9, '2024-08-01', '2024-11-01', 'Rodin: Sculpting the Human Form', 8, 1500);
 
 -- Linking museums and exhibits
-INSERT INTO museum_and_exhibit (museum_id, exhibit_id)
+INSERT INTO museum_exhibit (museum_id, exhibit_id)
 VALUES 
 (1, 1), (1, 2), (1, 3),
 (2, 4), (2, 5), (2, 6),
@@ -113,7 +112,7 @@ VALUES
 (20, 'Auguste Rodin', 'The Kiss', '1888-01-01', 'France', 'Marble', 5);
 
 -- Inserting art into exhibits based on exhibit names (note this means two artworks won't be in exhibits which could be a fun query!)
-INSERT INTO art_and_exhibit (art_id, exhibit_id)
+INSERT INTO art_exhibit (art_id, exhibit_id)
 SELECT a.art_id, e.exhibit_id
 FROM art a
 JOIN exhibit e ON e.exhibit_name LIKE CONCAT('%', a.artist, '%');
