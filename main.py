@@ -2,9 +2,15 @@ from openai import OpenAI
 import os
 from dotenv import load_dotenv
 
+from schema import get_schema
+
 load_dotenv("./.env")
 
 client = OpenAI(api_key=os.environ.get("OPENAI_API_KEY"))
+# ***model**** (aka not important) for getting the schema for the prompt:
+prompt = f"""
+given the following SQL schema:{get_schema()}
+"""
 
 completion = client.chat.completions.create(
     model="gpt-3.5-turbo",
@@ -12,6 +18,7 @@ completion = client.chat.completions.create(
         {
             "role": "system",
             "content": """
+                Given the following schema:  , answer the
                 CREATE TABLE Highschooler (
                 ID int primary key ,
                 name text ,
