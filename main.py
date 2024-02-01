@@ -1,12 +1,13 @@
 from openai import OpenAI
 import os
-from dotenv import load_dotenv
+# from dotenv import load_dotenv
 import sqlite3
 import json
 
 from sql_schema import get_schema
+from sql_schema import get_schema
 
-load_dotenv("./.env")
+# load_dotenv("./.env")
 
 client = OpenAI(api_key=os.environ.get("OPENAI_API_KEY"))
 # ***model**** (aka not important) for getting the schema for the prompt:
@@ -76,5 +77,3 @@ print(res.fetchall())
 
 cur.close()
 con.close()
-
-
