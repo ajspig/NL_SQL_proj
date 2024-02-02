@@ -92,8 +92,8 @@ for questionStrategy, query in questionStrategies.items():
         })
         cur.close()
 
-with open("jsonResults.txt", "w", encoding="utf-8") as f:
-    json.dump(questionResults, f, indent=2)
+    with open("jsonResults_" + questionStrategy + ".txt", "w", encoding="utf-8") as f:
+        json.dump(questionResults, f, indent=2)
 
 
 # close database 
