@@ -10,7 +10,7 @@ from sql_schema import get_schema
 # load_dotenv("./.env")
 
 client = OpenAI(api_key=os.environ.get("OPENAI_API_KEY"))
-con = sqlite3.connect("art_museum.db")
+con = sqlite3.connect("art_museum2.db")
 
 def sanitize_sql(sql):
     gpt_start = "```sql"

@@ -32,7 +32,8 @@ sql_create_table_visit = """
 		visitor_age VARCHAR(100),
 		visitor_gender VARCHAR(100),
 		museum_id INT,
-		PRIMARY KEY(visit_id)
+		PRIMARY KEY(visit_id),
+		FOREIGN KEY(museum_id) REFERENCES museum(museum_id)
 	);
 """
 
