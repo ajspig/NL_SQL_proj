@@ -113,10 +113,9 @@ VALUES
 (20, 'Auguste Rodin', 'The Kiss', '1888-01-01', 'France', 'Marble', 5);
 
 -- Inserting art into exhibits based on exhibit names (note this means two artworks won't be in exhibits which could be a fun query!)
-INSERT INTO art_exhibit (art_id, exhibit_id)
-SELECT a.art_id, e.exhibit_id
-FROM art a
-JOIN exhibit e ON e.exhibit_name LIKE CONCAT('%', a.artist, '%');
+INSERT INTO art_exhibit (art_id, exhibit_id) VALUES (1, 1), (2, 1), (3, 1), (4, 1), (5, 1),
+(6, 2), (7, 2), (8, 2), (9, 2), (10, 2),
+(11, 3), (12, 3), (13, 3), (14, 3), (15, 3);
 
 
 -- Inserting 10 visits
