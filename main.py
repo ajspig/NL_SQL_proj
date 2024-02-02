@@ -34,13 +34,13 @@ questionStrategies = {
 questions = [
     "What museum attracts the most 35 year old women?",
     "Which museum has the most art from France?",
-    # "Where is the largest museum located?",
-    # "Which museum has the longest running exhibit?",
-    # "List what art is in Rodin: Sculpting the Human Form.",
-    # "Which museum has the most male visitors under 40?",
-    # "Which museum has the oldest artwork?",
-    # "Are there any art pieces not currently in any exhibits?",
-    # "What kind of art is displayed in the Spanish Art Through the Ages exhibit?"
+    "Where is the largest museum located?",
+    "Which museum has the longest running exhibit?",
+    "List what art is in Rodin: Sculpting the Human Form.",
+    "Which museum has the most male visitors under 40?",
+    "Which museum has the oldest artwork?",
+    "Are there any art pieces not currently in any exhibits?",
+    "What kind of art is displayed in the Spanish Art Through the Ages exhibit?"
 ]
 questionResults = []
 for questionStrategy, query in questionStrategies.items():
@@ -70,11 +70,24 @@ for questionStrategy, query in questionStrategies.items():
             error = str(e)
             result = ""
             print(error)
+        
+        # Pass the results from the database into Chat GPT
+        gpt_db_results = client.chat.completions.create(
+            model="gpt-3.5-turbo",
+            messages=[
+                {
+                    "role": "assistant",
+                    "content": f""" We want to know answer to this question: {question}. 
+                    Here are the results from the database: " + {str(result)} "give friendly response according the db results""",
+                },
+            ],
+        )
 
         questionResults.append({
             "question": question,
             "sql": sql_query,
             "db_sql_results": result,
+            "friendly_response": gpt_db_results.choices[0].message.content,
             "error": error,
         })
         cur.close()
